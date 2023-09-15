@@ -32,8 +32,8 @@ module "devbox" {
   vmid = 5101
 
   bridge          = "vmbr0"
-  gateway_address = "10.40.10.1"
-  ip_address      = "10.40.10.100"
+  gateway_address = "10.14.40.1"
+  ip_address      = "10.14.40.100"
 
   cores = 2
   mem   = 8196
