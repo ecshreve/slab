@@ -14,6 +14,10 @@ terraform {
   }
 }
 
+provider "proxmox" {
+  pm_tls_insecure = true
+}
+
 module "ubuntu_vm" {
   count  = 1
   source = "app.terraform.io/slablan/ubuntu-vm/proxmox"
