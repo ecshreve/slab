@@ -31,11 +31,8 @@ module "devbox" {
   name = "devbox"
   vmid = 5101
 
-  bridge          = "vmbr0"
-  gateway_address = "10.14.40.1"
-  ip_address      = "10.14.40.100"
-
-  cores = 2
+  cloneimg = "ubuntu-jammy-server-cloudimg-tmpl"
+  ip_address = "10.14.40.100"
   mem   = 8196
   disk  = "20G"
 }
