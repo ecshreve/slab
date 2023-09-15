@@ -21,7 +21,7 @@ provider "proxmox" {
 module "devbox" {
   count  = 0
   source = "app.terraform.io/slablan/ubuntu-vm/proxmox"
-  version = "1.1.3"
+  version = "1.1.4"
 
   name = "devbox"
   vmid = 5101
