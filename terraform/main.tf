@@ -14,9 +14,10 @@ terraform {
   }
 }
 
-module "devbox" {
+module "ubuntu_vm" {
   count  = 1
   source = "app.terraform.io/slablan/ubuntu-vm/proxmox"
+  version = "1.1.3"
 
   name       = "devbox"
   vmid       = 5000
