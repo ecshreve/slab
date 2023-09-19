@@ -11,13 +11,14 @@ provider "proxmox" {
   pm_tls_insecure     = true
 }
 
-module "devbox" {
-  count  = 1
+module "cluster" {
+  count  = 3
   source = "app.terraform.io/slablan/ubuntu-vm/proxmox"
   version = "1.1.5"
 
-  name = "devbox"
-  vmid = 10010
-  ip_address = "10.14.40.90/24"
+  name = "node-${count.index}"
+  vmid = 180 + count.index
+  ip_address = "10.14.40.18${count.index}/24"
+  cores = 2
   mem = 4096
 }

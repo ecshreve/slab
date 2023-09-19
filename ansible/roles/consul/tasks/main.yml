@@ -1,0 +1,42 @@
+---
+- name: Include hashi base role
+  ansible.builtin.include_role:
+    name: hashi
+
+- name: Ensure consul package installed
+  ansible.builtin.apt:
+    name: consul
+    state: present
+    update-cache: true
+
+- name: Remove config directory
+  ansible.builtin.file:
+    dest: /etc/consul.d
+    state: absent
+
+- name: Check / create the config directory exists
+  ansible.builtin.file:
+    dest: /etc/consul.d
+    state: directory
+    owner: consul
+    group: consul
+    mode: "0755"
+
+- name: Copy server config
+  ansible.builtin.copy:
+    src: config.hcl
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+    mode: "0644"
+
+- name: Copy service unit file
+  ansible.builtin.copy:
+    src: consul.service
+    dest: /etc/systemd/system/consul.service
+    owner: consul
+    group: consul
+    mode: "0644"
+    force: true
+  notify:
+    - Restart consul

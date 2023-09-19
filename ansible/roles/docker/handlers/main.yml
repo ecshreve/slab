@@ -1,0 +1,7 @@
+---
+- name: Restart docker
+  ansible.builtin.service:
+    name: docker
+    state: restarted
+    enabled: true
+  ignore_errors: "{{ ansible_check_mode }}"
