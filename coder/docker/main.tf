@@ -18,10 +18,24 @@ locals {
 data "coder_provisioner" "me" {
 }
 
-provider "docker" {
+data "coder_workspace" "me" {
 }
 
-data "coder_workspace" "me" {
+variable "socket" {
+  type        = string
+  description = <<-EOF
+  The Unix socket that the Docker daemon listens on and how containers
+  communicate with the Docker daemon.
+
+  Either Unix or TCP
+  e.g., unix:///var/run/docker.sock
+
+  EOF
+  default = "unix:///var/run/docker.sock"
+}
+
+provider "docker" {
+  host = var.socket
 }
 
 resource "coder_agent" "main" {
@@ -189,6 +203,16 @@ resource "docker_image" "main" {
   }
 }
 
+resource "docker_container" "dind" {
+  count   = data.coder_workspace.me.start_count  
+  image      = "docker:dind"
+  privileged = true
+  network_mode = "host"
+  name       = "dind-${data.coder_workspace.me.id}"
+  entrypoint = ["dockerd", "-H", "tcp://0.0.0.0:2375"]
+}
+
+
 resource "docker_container" "workspace" {
   count = data.coder_workspace.me.start_count
   image = docker_image.main.name
@@ -198,12 +222,9 @@ resource "docker_container" "workspace" {
   hostname = data.coder_workspace.me.name
   # Use the docker gateway if the access URL is 127.0.0.1
   entrypoint = ["sh", "-c", replace(coder_agent.main.init_script, "/localhost|127\\.0\\.0\\.1/", "host.docker.internal")]
-  env        = ["CODER_AGENT_TOKEN=${coder_agent.main.token}"]
+  env        = ["CODER_AGENT_TOKEN=${coder_agent.main.token}", "DOCKER_HOST=localhost:2375"]
+  network_mode = "host"
 
-  host {
-    host = "host.docker.internal"
-    ip   = "host-gateway"
-  }
   volumes {
     container_path = "/home/${local.username}"
     volume_name    = docker_volume.home_volume.name
