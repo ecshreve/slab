@@ -3,7 +3,7 @@ data_dir   = "/opt/consul"
 
 server = true
 
-retry_join = ["10.14.40.180"]
+retry_join = ["10.14.40.140"]
 
 bootstrap_expect = 3
 

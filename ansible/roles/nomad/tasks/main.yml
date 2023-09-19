@@ -1,0 +1,42 @@
+---
+- name: Include hashi base role
+  ansible.builtin.include_role:
+    name: hashi
+
+- name: Ensure nomad package installed
+  ansible.builtin.apt:
+    name: nomad
+    state: present
+    update-cache: true
+
+- name: Remove config directory
+  ansible.builtin.file:
+    dest: /etc/nomad.d
+    state: absent
+
+- name: Check / create the config directory exists
+  ansible.builtin.file:
+    dest: /etc/nomad.d
+    state: directory
+    owner: nomad
+    group: nomad
+    mode: "0755"
+
+- name: Copy server config
+  ansible.builtin.copy:
+    src: config.hcl
+    dest: /etc/nomad.d/nomad.hcl
+    owner: nomad
+    group: nomad
+    mode: "0644"
+
+- name: Copy service unit file
+  ansible.builtin.copy:
+    src: nomad.service
+    dest: /etc/systemd/system/nomad.service
+    owner: nomad
+    group: nomad
+    mode: "0644"
+    force: true
+  notify:
+    - Restart nomad

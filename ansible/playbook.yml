@@ -4,6 +4,8 @@
   become: true
   roles:
     - docker
+    - consul
+    - nomad
   tasks:
     - name: Add user 'eric' to docker group
       ansible.builtin.user:
