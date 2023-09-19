@@ -1,6 +1,6 @@
 ---
 - name: Setup docker
-  hosts: nodes
+  hosts: all
   become: true
   roles:
     - docker
