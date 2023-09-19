@@ -17,8 +17,7 @@ module "devbox" {
   version = "1.1.5"
 
   name = "devbox"
-  vmid = 800
-  ip_address = "10.14.40.80/24"
-  mem = 8192
-  disk = "24G"
+  vmid = 10010
+  ip_address = "10.14.40.90/24"
+  mem = 4096
 }

@@ -1,6 +1,6 @@
 ---
 - name: Setup devbox
-  hosts: devbox
+  hosts: thinkbox
   become: true
   tasks:
     - name: Install packages for docker install
