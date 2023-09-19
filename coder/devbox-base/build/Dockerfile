@@ -29,6 +29,14 @@ RUN add-apt-repository ppa:aos1/diff-so-fancy \
 	fish \
 	&& rm -rf /var/lib/apt/lists/*
 
+ARG USER=coder
+RUN useradd ${USER} \
+      --create-home \
+      --shell=/bin/bash \
+      --groups=docker,sudo \
+      --uid=1001 \
+      --user-group && \
+    echo "${USER} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
 
-USER coder
-WORKDIR /home/coder
+USER ${USER}
+WORKDIR /home/${USER}
