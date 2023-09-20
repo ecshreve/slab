@@ -1,0 +1,29 @@
+---
+- name: Pull image
+  community.docker.docker_image:
+    name: "{{ base_repo }}"
+    tag: "{{ base_tag }}"
+    source: pull
+    pull:
+      platform: amd64
+
+- name: Tag image with base version
+  community.docker.docker_image:
+    name: "{{ base_repo }}"
+    tag: "{{ base_tag }}"
+    repository: "{{ reg_addr }}/{{ repo_name }}"
+    source: local
+    push: true
+
+- name: Add tags and push
+  community.docker.docker_image:
+    name: "{{ base_repo }}:{{ base_tag }}"
+    repository: "{{ reg_addr }}/{{ repo_name }}:{{ tag_name }}"
+    source: local
+    push: true
+  loop:
+    - custom
+    - latest
+  loop_control:
+    loop_var: tag_name
+    

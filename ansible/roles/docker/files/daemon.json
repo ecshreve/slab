@@ -1,0 +1,6 @@
+{
+  "insecure-registries": [
+    "registry.slab.lan",
+    "registry.slab.lan:5000"
+  ]
+}

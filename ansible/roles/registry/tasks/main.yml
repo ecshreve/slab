@@ -1,0 +1,37 @@
+---
+- name: Prerequisites
+  ansible.builtin.include_role:
+    name: docker
+
+- name: Deploy registry
+  community.general.docker_container:
+    name: reg
+    image: "registry:2"
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - 5000:5000
+      - 5001:5001
+    env:
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: "/var/lib/registry"
+      REGISTRY_HTTP_RELATIVEURLS: "true"
+      REGISTRY_HTTP_ADDR: ":5000"
+      REGISTRY_HTTP_DEBUG_ADDR: ":5001"
+      REGISTRY_HTTP_DEBUG_PROMETHEUS_ENABLED: "true"
+      REGISTRY_HTTP_DEBUG_PROMETHEUS_PATH: "/metrics"
+      REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin: '["*"]'
+
+- name: Deploy registry ui
+  community.general.docker_container:
+    name: ui
+    image: "joxit/docker-registry-ui"
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - 80:80
+    env:
+      NGINX_PROXY_PASS_URL: "http://10.14.40.185"
+      REGISTRY_TITLE: "SLAB Registry"
+      DELETE_IMAGES: "true"
+      CATALOG_ELEMENTS_LIMIT: "1000"

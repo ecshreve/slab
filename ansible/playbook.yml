@@ -1,17 +1,15 @@
 ---
-- name: Setup docker
-  hosts: all
+- name: Setup slab reg
+  hosts: reg
   become: true
   roles:
-    # - docker
-    # - hashi
+    - registry
+
+- name: Setup slab clust
+  hosts: clust
+  become: true
+  roles:
+    - docker
+    - hashi
     - consul
     - nomad
-  # tasks:
-  #   - name: Add user 'eric' to docker group
-  #     ansible.builtin.user:
-  #       name: eric
-  #       groups: docker
-  #       append: true
-
-

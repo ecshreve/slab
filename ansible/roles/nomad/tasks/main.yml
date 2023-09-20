@@ -42,3 +42,4 @@
     force: true
   notify:
     - Restart nomad
+    

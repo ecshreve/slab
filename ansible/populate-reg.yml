@@ -1,0 +1,25 @@
+---
+- name: Pull, tag, and push docker images to local registry
+  hosts: localhost
+  tasks:
+    - name: Handle new images local docker registry
+      ansible.builtin.include_role:
+        name: registry-image
+      vars:
+        reg_addr: "10.14.40.185:5000"
+        repo_name: "{{ item.key }}"
+        base_repo: "{{ item.value.repo }}"
+        base_tag: "{{ item.value.tag }}"
+      loop: "{{ images | dict2items }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+  vars:
+    images:
+      adminer:
+        repo: adminer
+        tag: 4.8.1
+      grafana:
+        repo: grafana/grafana
+        tag: 10
+      redis:
+        repo: redis
+        tag: 7
