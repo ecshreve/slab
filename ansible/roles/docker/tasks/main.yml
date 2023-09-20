@@ -60,3 +60,20 @@
     groups: docker
     append: true
     
+- name: Create docker service directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: "0755"
+
+- name: Create docker unit override file
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/docker.service.d/docker.conf
+    mode: "0644"
+    owner: root
+    group: root
+    content: |
+      [Service]
+      ExecStart=
+      ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H fd:// --containerd=/run/containerd/containerd.sock
+  notify: Restart docker

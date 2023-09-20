@@ -5,11 +5,11 @@
   roles:
     - registry
 
-- name: Setup slab clust
-  hosts: clust
-  become: true
-  roles:
-    - docker
-    - hashi
-    - consul
-    - nomad
+# - name: Setup slab clust
+#   hosts: clust
+#   become: true
+#   roles:
+#     - docker
+#     - hashi
+#     - consul
+#     - nomad

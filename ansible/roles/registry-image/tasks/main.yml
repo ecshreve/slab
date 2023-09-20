@@ -26,4 +26,3 @@
     - latest
   loop_control:
     loop_var: tag_name
-    
