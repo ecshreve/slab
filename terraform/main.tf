@@ -12,7 +12,7 @@ provider "proxmox" {
 }
 
 module "cluster" {
-  count  = 3
+  count  = 1
   source = "app.terraform.io/slablan/ubuntu-vm/proxmox"
   version = "1.1.5"
 
@@ -20,5 +20,5 @@ module "cluster" {
   vmid = 140 + count.index
   ip_address = "10.14.40.14${count.index}/24"
   cores = 2
-  mem = 4096
+  mem = 8192
 }

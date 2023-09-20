@@ -29,6 +29,8 @@
     owner: nomad
     group: nomad
     mode: "0644"
+  notify:
+    - Restart nomad
 
 - name: Copy service unit file
   ansible.builtin.copy:

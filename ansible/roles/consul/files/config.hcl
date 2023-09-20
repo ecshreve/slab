@@ -5,7 +5,7 @@ server = true
 
 retry_join = ["10.14.40.140"]
 
-bootstrap_expect = 3
+bootstrap_expect = 1
 
 addresses {
   http = "127.0.0.1 {{ GetInterfaceIP \"eth0\" }} {{ GetInterfaceIP \"docker0\" }}"
@@ -24,10 +24,6 @@ ui_config {
   enabled = true
 }
 
-connect {
-  enabled = true
-}
-
 telemetry {
   prometheus_retention_time = "24h"
   disable_hostname          = true
@@ -36,21 +32,3 @@ telemetry {
 # Enable script checks
 enable_script_checks       = true
 enable_local_script_checks = true
-
-enable_central_service_config = true
-
-tls {
-  defaults {
-    verify_incoming = false
-    verify_outgoing = false
-  }
-  grpc {
-    use_auto_cert = false
-  }
-}
-
-acl = {
-  enabled                  = true
-  default_policy           = "allow"
-  enable_token_persistence = true
-}
