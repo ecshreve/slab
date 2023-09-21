@@ -14,6 +14,9 @@
   ignore_errors: "{{ ansible_check_mode }}"
   vars:
     images:
+      uptime:
+        repo: louislam/uptime-kuma
+        tag: 1.23.2-debian
       adminer:
         repo: adminer
         tag: 4.8.1
@@ -32,3 +35,15 @@
       loki:
         repo: grafana/loki
         tag: 2.9.1
+      promtail:
+        repo: grafana/promtail
+        tag: 2.9.1
+      node-exporter:
+        repo: prom/node-exporter
+        tag: v1.6.1
+      whoami:
+        repo: traefik/whoami
+        tag: v1.10.1
+      speedtest:
+        repo: linuxserver/librespeed
+        tag: 5.2.5
