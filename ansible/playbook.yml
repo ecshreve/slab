@@ -1,9 +1,9 @@
 ---
-# - name: Setup slab reg
-#   hosts: reg
-#   become: true
-#   roles:
-#     - registry
+- name: Setup slab reg
+  hosts: reg
+  become: true
+  roles:
+    - registry
 
 - name: Setup slab clust
   hosts: clust
@@ -16,12 +16,12 @@
         - "registry.slab.lan:5000"
   roles:
     - ecshreve.docker
+    - hashi
+    - consul
+    - nomad
   tasks:
     - name: Add user 'eric' to docker group
       ansible.builtin.user:
         name: eric
         groups: docker
         append: true
-    # - hashi
-    # - consul
-    # - nomad
