@@ -11,30 +11,30 @@ provider "proxmox" {
   pm_tls_insecure     = true
 }
 
+variable "sshkey" {
+  type = string
+}
+
 module "cluster" {
   count  = 1
-  source = "app.terraform.io/slablan/ubuntu-vm/proxmox"
-  version = "1.1.5"
+  source = "./modules/ubuvm"
+  pubkey = var.sshkey
 
   name = "node-${count.index}"
   vmid = 140 + count.index
 
   ip_address = "10.14.40.14${count.index}/24"
-  cores = 2
   mem = 8192
 }
 
 module "registry" {
   count  = 1
-  source = "app.terraform.io/slablan/ubuntu-vm/proxmox"
-  version = "1.1.5"
+  source = "./modules/ubuvm"
+  pubkey = var.sshkey
 
   name = "docker-registry"
   vmid = 5000
 
-  ip_address      = "10.14.40.185/24"
-
-  cores = 2
-  mem   = 2048
+  ip_address = "10.14.40.185/24"
   disk  = "50G"
 }

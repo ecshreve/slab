@@ -19,6 +19,12 @@ srv-1 is running a private docker registry, a Nomad cluster, and a reverse proxy
 
 vault is running a local DNS server
 
+## terraform
+
+Deploy VMs to Proxmox. Most common arguments are abstracted out into
+the child module `ubuvm` where default values are set. In the past I've maintained
+this module in a private Terraform registry, but that was cumbersome to maintain
+and harder to document and reason about.
 
 ## ansible
 
