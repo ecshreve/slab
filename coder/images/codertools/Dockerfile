@@ -1,8 +1,9 @@
-FROM ecshreve/devbox-core:latest
+FROM ecshreve/coderbase:latest
 
 # Run everything as root
 USER root
 
+# cli tools
 RUN apt-get update && apt-get install -y \
 	apt-utils \
 	bat \
@@ -26,6 +27,17 @@ RUN add-apt-repository ppa:aos1/diff-so-fancy \
 	fish \
 	&& rm -rf /var/lib/apt/lists/*
 
+RUN curl -fsSL "https://apt.releases.hashicorp.com/gpg" | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
+RUN apt-get update && apt-get install -y \
+	terraform \
+	consul \
+	nomad \
+	vault \
+	packer \
+	vagrant \
+	&& rm -rf /var/lib/apt/lists/*
+
 # Install go
 RUN curl -L "https://go.dev/dl/go1.21.1.linux-amd64.tar.gz" | tar -C /usr/local -xzvf -
 
@@ -33,18 +45,10 @@ RUN curl -L "https://go.dev/dl/go1.21.1.linux-amd64.tar.gz" | tar -C /usr/local 
 ENV GOROOT /usr/local/go
 ENV PATH $PATH:$GOROOT/bin
 
-ARG USER=eric
-RUN useradd ${USER} \
-      --create-home \
-      --shell=/bin/bash \
-      --groups=docker,sudo \
-      --uid=1001 \
-      --user-group && \
-    echo "${USER} ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/nopasswd
-
-ENV GOPATH /home/${USER}/go
+ENV GOPATH /home/coder/go
 ENV GOBIN $GOPATH/bin
 ENV PATH $PATH:$GOBIN
 
-USER ${USER}
-WORKDIR /home/${USER}
+USER coder
+WORKDIR /home/coder
+
