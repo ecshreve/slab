@@ -1,7 +1,7 @@
 ---
-- name: Prerequisites
-  ansible.builtin.include_role:
-    name: docker
+# - name: Prerequisites
+#   ansible.builtin.include_role:
+#     name: docker
 
 - name: Deploy registry
   community.general.docker_container:
@@ -31,7 +31,7 @@
     ports:
       - 80:80
     env:
-      NGINX_PROXY_PASS_URL: "http://registry:5000"
+      NGINX_PROXY_PASS_URL: "http://10.14.40.185:5000"
       REGISTRY_TITLE: "SLAB Registry"
       DELETE_IMAGES: "true"
       CATALOG_ELEMENTS_LIMIT: "1000"

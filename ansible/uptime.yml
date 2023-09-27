@@ -1,0 +1,122 @@
+---
+- name: Configure uptime
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Install python module
+      ansible.builtin.pip:
+        name: uptime_kuma_api
+        state: present
+
+    - name: Login with credentials once and register the result
+      lucasheld.uptime_kuma.login:
+        api_url: http://10.14.40.155:3001
+        api_username: eric
+        api_password: password
+      register: result
+
+    - name: Extract the token from the result and set it as fact
+      ansible.builtin.set_fact:
+        api_token: "{{ result.token }}"
+
+    - name: Login by token and create a monitor groups
+      lucasheld.uptime_kuma.monitor:
+        api_url: http://10.14.40.155:3001
+        api_token: "{{ api_token }}"
+        name: "{{ item }}"
+        type: group
+        state: present
+      loop: "{{ monitor_groups }}"
+      vars:
+        monitor_groups:
+          - core
+          - network
+          - web
+          - services
+
+    - name: Login by token and create a http monitors
+      lucasheld.uptime_kuma.monitor:
+        api_url: http://10.14.40.155:3001
+        api_token: "{{ api_token }}"
+        name: "{{ item.key }}"
+        url: "{{ item.value }}"
+        type: http
+        state: present
+        ignoreTls: true
+        parent_name: core
+      loop: "{{ http_monitors | dict2items }}"
+      vars:
+        http_monitors:
+          pihole: http://10.14.40.45/admin
+          proxmox: https://10.14.40.12:8006
+          unifi: https://10.14.40.1
+          consul: http://10.14.40.140:8500
+          nomad: http://10.14.40.140:4646
+
+    - name: Login by token and create hardware ping monitors
+      lucasheld.uptime_kuma.monitor:
+        api_url: http://10.14.40.155:3001
+        api_token: "{{ api_token }}"
+        name: "{{ item.key }}"
+        hostname: "{{ item.value }}"
+        type: ping
+        state: present
+        parent_name: network
+      loop: "{{ ping_monitors | dict2items }}"
+      vars:
+        ping_monitors:
+          beefrouter: 10.14.43.1
+          beefswitch: 10.14.43.118
+          beefap: 10.14.43.150
+          vault: 10.14.40.107
+          srv1: 10.14.40.12
+
+    - name: Login by token and create service ping monitors
+      lucasheld.uptime_kuma.monitor:
+        api_url: http://10.14.40.155:3001
+        api_token: "{{ api_token }}"
+        name: "{{ item.key }}"
+        hostname: "{{ item.value }}"
+        type: ping
+        state: present
+        parent_name: services
+      loop: "{{ ping_monitors | dict2items }}"
+      vars:
+        ping_monitors:
+          registry: 10.14.40.185
+          coderbox: 10.14.40.55
+          pihole: 10.14.40.45
+          homeassistant: 10.14.40.76
+
+    - name: Login by token and create web monitors
+      lucasheld.uptime_kuma.monitor:
+        api_url: http://10.14.40.155:3001
+        api_token: "{{ api_token }}"
+        name: "{{ item.key }}"
+        url: "{{ item.value }}"
+        type: http
+        state: absent
+        parent_name: web
+      loop: "{{ web_monitors | dict2items }}"
+      vars:
+        web_monitors:
+          github: https://github.com/ecshreve
+          site: https://shreve.dev
+          blog: https://shread.me
+
+    - name: Login by token and create service monitors
+      lucasheld.uptime_kuma.monitor:
+        api_url: http://10.14.40.155:3001
+        api_token: "{{ api_token }}"
+        name: "{{ item.key }}"
+        url: "{{ item.value }}"
+        type: http
+        state: absent
+        parent_name: services
+      loop: "{{ srvc_monitors | dict2items }}"
+      vars:
+        srvc_monitors:
+          grafana: http://slab.lan/grafana
+          prometheus: http://slab.lan/prometheus
+          coder: http://coder.slab.lan
+          registryui: http://registry.slab.lan
