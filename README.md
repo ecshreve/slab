@@ -44,3 +44,17 @@ uptime.yml
 [ecshreve.docker](https://galaxy.ansible.com/ecshreve/docker)
 - Installs and configures docker.
 
+## coder
+
+Base images maintained in public docker repo, based on Dockerfiles found throughout
+the Coder documentation and related projects.
+
+At this time the `coderall-tmpl` is the Coder template I use for new workspaces. It's
+based on the `ecshreve/coderall:eric` image. Which yieds a Ubuntu 22.04 based workspace
+with varioud development tools and settings pre-configured.
+
+### screenshots
+
+![coder](/static/coder.png)
+![consul](/static/consul.png)
+![nomad](/static/nomad.png)
