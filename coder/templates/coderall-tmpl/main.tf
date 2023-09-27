@@ -36,6 +36,8 @@ resource "coder_agent" "main" {
     # install and start code-server
     curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server --version 4.16.1
     /tmp/code-server/bin/code-server --auth none --port 13337 >/tmp/code-server.log 2>&1 &
+
+    mkdir -p /home/eric/github.com/ecshreve
   EOT
 
   # These environment variables allow you to make Git commits right away after creating a
@@ -124,14 +126,6 @@ resource "coder_agent" "main" {
   }
 }
 
-# resource "coder_app" "novnc" {
-#   agent_id      = coder_agent.main.id
-#   name          = "noVNC Desktop"
-#   icon          = "https://ppswi.us/noVNC/app/images/icons/novnc-192x192.png"
-#   url           = "http://localhost:6081"
-#   relative_path = true
-# }
-
 resource "coder_app" "code-server" {
   agent_id     = coder_agent.main.id
   slug         = "code-server"
@@ -175,23 +169,19 @@ resource "docker_volume" "home_volume" {
   }
 }
 
-resource "docker_image" "main" {
-  name = "coder-${data.coder_workspace.me.id}"
-  build {
-    context = "./build"
-    build_args = {
-      USER = local.username
-    }
-  }
-  triggers = {
-    dir_sha1 = sha1(join("", [for f in fileset(path.module, "build/*") : filesha1(f)]))
-  }
+data "coder_parameter" "docker_image" {
+  name         = "docker_image"
+  display_name = "Docker image"
+  description  = "The Docker image will be used to build your workspace."
+  default      = "ecshreve/coderall:eric"
+  icon         = "/icon/docker.png"
+  type         = "string"
+  mutable      = false
 }
-
 
 resource "docker_container" "workspace" {
   count = data.coder_workspace.me.start_count
-  image = docker_image.main.name
+  image = data.coder_parameter.docker_image.value
   # Uses lower() to avoid Docker restriction on container names.
   name = "coder-${data.coder_workspace.me.owner}-${lower(data.coder_workspace.me.name)}"
   # Hostname makes the shell more user friendly: coder@my-workspace:~$
