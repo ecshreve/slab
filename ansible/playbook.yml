@@ -9,12 +9,15 @@
   hosts: clust
   become: true
   vars:
+    nfs_src: "10.14.40.140:/mnt/slab-clust"
+    nfs_dst: "/mnt/slab-clust"
     manage_docker_service: true
     docker_daemon_options:
       insecure-registries:
         - "registry.slab.lan"
         - "registry.slab.lan:5000"
   roles:
+    - general
     - ecshreve.docker
     - hashi
     - consul

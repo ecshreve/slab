@@ -36,8 +36,8 @@
   ansible.builtin.copy:
     src: nomad.service
     dest: /etc/systemd/system/nomad.service
-    owner: nomad
-    group: nomad
+    owner: root
+    group: root
     mode: "0644"
     force: true
   notify:

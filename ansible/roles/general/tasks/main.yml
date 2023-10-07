@@ -1,0 +1,24 @@
+---
+- name: Install packages
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - software-properties-common
+      - net-tools
+      - nfs-common
+      - python3-pip
+    state: present
+    update_cache: true
+
+- name: Mount nfs share
+  ansible.posix.mount:
+    src: '{{ nfs_src }}'
+    path: '{{ nfs_dst }}'
+    state: mounted
+    boot: true
+    opts: rw,sync,hard
+    fstype: nfs
