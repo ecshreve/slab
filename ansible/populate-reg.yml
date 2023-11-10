@@ -14,15 +14,18 @@
   ignore_errors: "{{ ansible_check_mode }}"
   vars:
     images:
-      csi-nfs-plugin:
-        repo: registry.gitlab.com/rocketduck/csi-plugin-nfs
-        tag: 0.7.0
-      storage-controller:
-        repo: registry.gitlab.com/rocketduck/csi-plugin-nfs
-        tag: 0.7.0
-      storage-node:
-        repo: registry.gitlab.com/rocketduck/csi-plugin-nfs
-        tag: 0.7.0
+      statty:
+        repo: ecshreve/statty
+        tag: 0.0.1
+      # csi-nfs-plugin:
+      #   repo: registry.gitlab.com/rocketduck/csi-plugin-nfs
+      #   tag: 0.7.0
+      # storage-controller:
+      #   repo: registry.gitlab.com/rocketduck/csi-plugin-nfs
+      #   tag: 0.7.0
+      # storage-node:
+      #   repo: registry.gitlab.com/rocketduck/csi-plugin-nfs
+      #   tag: 0.7.0
       # organizr:
       #   repo: organizr/organizr
       #   tag: latest
@@ -36,8 +39,8 @@
       #   repo: adminer
       #   tag: 4.8.1
       # mariadb:
-      #   repo: mariadb
-      #   tag: 10.5.8
+      #   repo: linuxserver/mariadb
+      #   tag: 10.11.5
       # redis:
       #   repo: redis
       #   tag: 7
