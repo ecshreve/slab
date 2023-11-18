@@ -1,60 +1,45 @@
 # slab
 
-## overview
+## Overview
 
-This project is a collection of configuration files and scripts for setting up my personal homelab / development environment.
+Slab is a project encompassing a suite of configuration files and scripts designed to streamline the setup of my personal homelab and development environment. 
 
-TLDR: 
+The environment consists of:
 
-my machine: macbook pro
-other machines:
-- srv-1: lenovo mini pc running proxmox
-- coderbox: lenovo mini pc running ubuntu
-- vault: synology nas1
-- knossus: synology nas2
+- **My Machine**: MacBook Pro
+- **srv-1**: A Lenovo mini PC running Proxmox, a private Docker registry, a Nomad cluster, and a reverse proxy.
+- **Coderbox**: A Lenovo mini PC running Ubuntu and Coder for workspace provisioning based on this repo's templates.
+- **Vault**: A Synology NAS1 running a local DNS server.
+- **Knossus**: A Synology NAS2.
 
-coderbox is running Coder, used to provision workspaces based on the templates in this repo.
+## Terraform
 
-srv-1 is running a private docker registry, a Nomad cluster, and a reverse proxy.
+Terraform is used to manage the infrastructure of the project. The main components include:
 
-vault is running a local DNS server
+- **Main.tf**: This file contains the primary configuration for the infrastructure.
+- **Variables.tf**: This file defines the variables used in the main configuration.
+- **Outputs.tf**: This file defines the outputs of the Terraform configuration.
 
-## terraform
+## Ansible
 
-Deploy VMs to Proxmox. Most common arguments are abstracted out into
-the child module `ubuvm` where default values are set. In the past I've maintained
-this module in a private Terraform registry, but that was cumbersome to maintain
-and harder to document and reason about.
+Ansible is used for configuration management. The main components include:
 
-## ansible
+## Playbooks
 
-### playbooks
+- **playbook.yml**: Sets up private Docker registry and cluster nodes.
+- **populate-reg.yml**: Populates private Docker registry with images.
+- **uptime.yml**: Configures Uptime-Kuma monitors.
 
-playbook.yml
-- Main playbook, sets up private docker registry and cluster nodes.
+## Galaxy Roles
 
-populate-reg.yml
-- Populates private docker registry with images.
+- **[ecshreve.docker](https://galaxy.ansible.com/ecshreve/docker)**: Installs and configures Docker.
 
-uptime.yml
-- Configures uptime-kuma monitors.
+## Coder
 
-### galaxy roles
+Coder uses base images maintained in a public Docker repository. These images are based on Dockerfiles found in the Coder documentation and related projects.
 
-[ecshreve.docker](https://galaxy.ansible.com/ecshreve/docker)
-- Installs and configures docker.
+### Base Image
 
-## coder
-
-Base images maintained in public docker repo, based on Dockerfiles found throughout
-the Coder documentation and related projects.
-
-At this time the `coderall-tmpl` is the Coder template I use for new workspaces. It's
-based on the `ecshreve/coderall:eric` image. Which yieds a Ubuntu 22.04 based workspace
-with varioud development tools and settings pre-configured.
-
-### screenshots
+- **coderall-tmpl**: This is the Coder template used for new workspaces. It's based on the `ecshreve/coderall:eric` image, which provides an Ubuntu 22.04 based workspace with various development tools and settings pre-configured.
 
 ![coder](/static/coder.png)
-![consul](/static/consul.png)
-![nomad](/static/nomad.png)
