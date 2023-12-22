@@ -6,10 +6,12 @@
     - registry
 
 - name: Setup slab clust
-  hosts: clust
+  hosts: 
+    - worker0
+    - worker1
   become: true
   vars:
-    nfs_src: "10.14.40.140:/mnt/slab-clust"
+    nfs_src: "10.14.40.107:/volume1/slab-clust"
     nfs_dst: "/mnt/slab-clust"
     manage_docker_service: true
     docker_daemon_options:

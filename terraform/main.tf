@@ -27,6 +27,17 @@ module "cluster" {
   mem = 8192
 }
 
+module "workers" {
+  count  = 2
+  source = "./modules/ubuvm"
+  pubkey = var.sshkey
+
+  name = "worker-${count.index}"
+  vmid = 160 + count.index
+
+  ip_address = "10.14.40.16${count.index}/24"
+}
+
 module "registry" {
   count  = 1
   source = "./modules/ubuvm"

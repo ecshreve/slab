@@ -7,7 +7,7 @@ client {
 
 server {
   enabled          = true
-  bootstrap_expect = 1
+  bootstrap_expect = 3
 }
 
 ui {
@@ -55,7 +55,7 @@ plugin "docker" {
 }
 
 telemetry {
-  collection_interval        = "10s"
+  collection_interval        = "1s"
   disable_hostname           = true
   prometheus_metrics         = true
   publish_allocation_metrics = true

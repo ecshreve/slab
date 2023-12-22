@@ -8,10 +8,11 @@
     name: consul
     state: present
     update-cache: true
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Remove config directory
   ansible.builtin.file:
-    dest: /etc/consul.d
+    dest: /etc/consul.d/consul.env
     state: absent
 
 - name: Check / create the config directory exists

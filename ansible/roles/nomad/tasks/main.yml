@@ -8,10 +8,12 @@
     name: nomad
     state: present
     update-cache: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  
 
 - name: Remove config directory
   ansible.builtin.file:
-    dest: /etc/nomad.d
+    dest: /etc/nomad.d/nomad.env
     state: absent
 
 - name: Check / create the config directory exists

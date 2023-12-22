@@ -5,7 +5,7 @@ server = true
 
 retry_join = ["10.14.40.140"]
 
-bootstrap_expect = 1
+bootstrap_expect = 3
 
 addresses {
   http = "127.0.0.1 {{ GetInterfaceIP \"eth0\" }} {{ GetInterfaceIP \"docker0\" }}"
