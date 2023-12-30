@@ -8,10 +8,10 @@ retry_join = ["10.14.40.140"]
 bootstrap_expect = 1
 
 addresses {
-  http = "127.0.0.1 {{ GetInterfaceIP \"eth0\" }} {{ GetInterfaceIP \"docker0\" }}"
+  http = "127.0.0.1 {{ GetInterfaceIP \"eth0|eno1\" }} {{ GetInterfaceIP \"docker0\" }}"
 }
 
-advertise_addr = "{{ GetInterfaceIP \"eth0\" }}"
+advertise_addr = "{{ GetInterfaceIP \"eth0|eno1\" }}"
 
 ports {
   grpc  = 8502

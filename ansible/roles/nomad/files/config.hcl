@@ -7,7 +7,7 @@ client {
 
 server {
   enabled          = true
-  bootstrap_expect = 1
+  bootstrap_expect = 2
 }
 
 ui {

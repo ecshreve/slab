@@ -1,16 +1,39 @@
 ---
-- name: Setup slab reg
-  hosts: reg
-  become: true
-  roles:
-    - registry
+# - name: Setup slab reg
+#   hosts: reg
+#   become: true
+#   roles:
+#     - registry
 
-- name: Setup slab clust
-  hosts: clust
+# - name: Setup node0 on slab clust
+#   hosts: node0
+#   become: true
+#   vars:
+#     nfs_src: "10.14.40.140:/mnt/slab-clust"
+#     nfs_dst: "/mnt/slab-clust"
+#     mount_nfs: true
+#     manage_docker_service: true
+#     docker_daemon_options:
+#       insecure-registries:
+#         - "registry.slab.lan"
+#         - "registry.slab.lan:5000"
+#   roles:
+#     - general
+#     - ecshreve.docker
+#     - hashi
+#     - consul
+#     - nomad
+#   tasks:
+#     - name: Add user 'eric' to docker group
+#       ansible.builtin.user:
+#         name: eric
+#         groups: docker
+#         append: true
+- name: Setup deepthought on slab clust
+  hosts: deepthought
   become: true
   vars:
-    nfs_src: "10.14.40.140:/mnt/slab-clust"
-    nfs_dst: "/mnt/slab-clust"
+    mount_nfs: false
     manage_docker_service: true
     docker_daemon_options:
       insecure-registries:
@@ -22,9 +45,5 @@
     - hashi
     - consul
     - nomad
-  tasks:
-    - name: Add user 'eric' to docker group
-      ansible.builtin.user:
-        name: eric
-        groups: docker
-        append: true
+
+

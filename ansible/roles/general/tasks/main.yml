@@ -22,3 +22,4 @@
     boot: true
     opts: rw,sync,hard
     fstype: nfs
+  when: mount_nfs
